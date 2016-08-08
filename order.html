@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>タイトルが入ります</title>
+<link rel="stylesheet" href="css/style.css">
+<script src="http://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.2/moment.min.js"></script>
+</head>
+
+<script>
+    var foodarray1 = new Array("豆サラダ","豆腐","ササミ","おかゆ","ヨーグルト");    //食べてほしい料理を配列に格納
+    var foodrand1 = foodarray1[Math.floor( Math.random() * 5 )] ;// 0〜4の乱数を発生 ([4+1]を指定する)そしてそれをとって来る。
+    //document.write(foodrand1);    //結果を文字列として表示する。ちなみにこれはテストのために作成しました。
+    var foodarray2 = new Array("グラタン","豚しゃぶ","わかめうどん","サバの味噌煮","シチュー");    //食べてほしい料理を配列に格納
+    var foodrand2 = foodarray2[Math.floor( Math.random() * 5 )] ;// 0〜4の乱数を発生 ([4+1]を指定する)そしてそれをとって来る。
+    //document.write(foodrand2);      //結果を文字列として表示する。ちなみにこれはテストのために作成しました。
+
+    function food_judge(bmi,low,high,center,linel,lineh){ //本日のbmiを基準に評価する関数
+
+        if(linel<bmi&&bmi<lineh){ //超適正幅に入ってたら
+            //document.write("素晴らしい"); //素晴らしい
+            return foodrand2;
+        }
+
+        else{
+            if(low<bmi&&bmi<high){ //超適正幅には入ってないが、適正幅には入ってる
+                if(bmi>center){ //少し高め
+                  return foodrand1; //適正だが少し痩せよう
+                }
+                else{ //少し低め
+                    //document.write("適正だが少し太ろう"); //適正だが少し太ろう
+                    return foodrand2;
+                }
+            }
+
+            else{ //適正幅にも入ってない→危険帯域
+                if(bmi>high){ //太り過ぎ
+                    //document.write("運動しないとやばいよ"); //運動しないとやばいよ
+                    return foodrand1;
+                }
+                if(bmi<low){ //痩せすぎ
+                    //document.write("しっかり食わないとやばいよ");//しっかり食わないとやばいよ
+                    return foodrand2;
+                }
+            }
+        }
+    }
+
+    function judge(bmi,low,high,center,linel,lineh){ //本日のbmiを基準に評価する関数
+
+        if(linel<bmi&&bmi<lineh){ //超適正幅に入ってたら
+            //document.write("素晴らしい"); //素晴らしい
+            return "素晴らしい";
+        }
+
+        else{
+            if(low<bmi&&bmi<high){ //超適正幅には入ってないが、適正幅には入ってる
+                if(bmi>center){ //少し高め
+                  return "適正だが少し痩せよう"; //適正だが少し痩せよう
+                }
+                else{ //少し低め
+                    //document.write("適正だが少し太ろう"); //適正だが少し太ろう
+                    return "適正だが少し太ろう";
+                }
+            }
+
+            else{ //適正幅にも入ってない→危険帯域
+                if(bmi>high){ //太り過ぎ
+                    //document.write("運動しないとやばいよ"); //運動しないとやばいよ
+                    return "運動しないとやばいよ";
+                }
+                if(bmi<low){ //痩せすぎ
+                    //document.write("しっかり食わないとやばいよ");//しっかり食わないとやばいよ
+                    return "しっかり食わないとやばいよ";
+                }
+            }
+        }
+    }
+    function return_dif(bmi,low,high,center,linel,lineh){ //本日のbmiを基準に適正ライン(center)からの差分を返す関数
+
+        if(linel<bmi&&bmi<lineh){ //超適正幅に入ってたら
+            //document.write("素晴らしい"); //素晴らしい
+            var a=bmi-center;
+            return a;
+        }
+
+        else{
+            if(low<bmi&&bmi<high){ //超適正幅には入ってないが、適正幅には入ってる
+                if(bmi>centeｒ){ //少し高め
+                    //document.write("適正だが少し痩せよう"); //適正だが少し痩せよう
+                    var a=bmi-lineh;
+                    return a;
+                }
+                else{ //少し低め
+                    //document.write("適正だが少し太ろう"); //適正だが少し太ろう
+                    var a=bmi-linel;
+                    return a;
+                }
+            }
+
+            else{ //適正幅にも入ってない→危険帯域
+                if(bmi>high){ //太り過ぎ
+                    //document.write("運動しないとやばいよ"); //運動しないとやばいよ
+                    var a=bmi-high;
+                    return a;
+                }
+                if(bmi<low){ //痩せすぎ
+                    //document.write("しっかり食わないとやばいよ");//しっかり食わないとやばいよ
+                    var a=bmi-low;
+                    return a;
+                }
+            }
+        }
+    }
+    var output=moment().diff(moment([2016, 4, 1]), "days");//最後の月経日
+    var wee=output/7;
+    var week=Math.round(wee);
+    document.write(week);
+    //var day=output%7;
+    var bmi=30;
+    //var week=14;
+    //var week=14;
+    //bmiはプラットホームから取得！
+    //→今日が、妊娠初日から何週と何日目？
+
+
+  if(0<=week&&week<=3){ //妊娠したばっかり、一般人と同じ
+    var low=18,range=7; //low=#{適正下限bmi},range=#{適正bmiの幅}
+    var high=low+range; // high=#{適正上限bmi}
+    var center=(low+high)/2;//中央値
+    var lineh=center+range/4;//超適正上限
+    var linel=center-range/4;//超適正下限
+    var result=judge(bmi,low,high,center,linel,lineh);
+    var dif_order=return_dif(bmi,low,high,center,linel,lineh);
+    var food=food_judge(bmi,low,high,center,linel,lineh);
+    if(dif_order>0){
+    document.write("<h1>"+"あなたのBMI評価 : "+result+"→"+dif_order+"だけBMI体重を上げましょう!  "+food+"を食べましょう"+"</h1>");
+    }else {
+    document.write("<h1>"+"あなたのBMI評価 : "+result+"→"+dif_order+"だけBMI体重を上げましょう!  "+food+"を食べましょう"+"</h1>");
+    }
+  }else if (4<=week&&week<=15) { //妊娠初期
+    var low=18,range=7; //low=#{適正下限bmi},range=#{適正bmiの幅}
+    var high=low+range; // high=#{適正上限bmi}
+    var center=(low+high)/2;//中央値
+    var lineh=center+range/4;//超適正上限
+    var linel=center-range/4;//超適正下限
+    var result=judge(bmi,low,high,center,linel,lineh);
+    var dif_order=return_dif(bmi,low,high,center,linel,lineh);
+    var food=food_judge(bmi,low,high,center,linel,lineh);
+    if(dif_order>0){
+    document.write("<h1>"+"あなたのBMI評価 : "+result+"→"+dif_order+"だけBMI体重を上げましょう!  "+food+"を食べましょう"+"</h1>");
+    }else {
+    document.write("<h1>"+"あなたのBMI評価 : "+result+"→"+dif_order+"だけBMI体重を上げましょう!  "+food+"を食べましょう"+"</h1>");
+    }
+  }else if (16<=week&&week<=27) { //妊娠中期
+    var low=18,range=7; //low=#{適正下限bmi},range=#{適正bmiの幅}
+    var high=low+range; // high=#{適正上限bmi}
+    var center=(low+high)/2;//中央値
+    var lineh=center+range/4;//超適正上限
+    var linel=center-range/4;//超適正下限
+    var result=judge(bmi,low,high,center,linel,lineh);
+    var dif_order=return_dif(bmi,low,high,center,linel,lineh);
+    var food=food_judge(bmi,low,high,center,linel,lineh);
+    if(dif_order>0){
+    document.write("<h1>"+"あなたのBMI評価 : "+result+"→"+dif_order+"だけBMI体重を上げましょう!  "+food+"を食べましょう"+"</h1>");
+    }else {
+    document.write("<h1>"+"あなたのBMI評価 : "+result+"→"+dif_order+"だけBMI体重を上げましょう!  "+food+"を食べましょう"+"</h1>");
+    }
+  }else if (28<=week&&week<=39) { //妊娠後期
+    var low=18,range=7; //low=#{適正下限bmi},range=#{適正bmiの幅}
+    var high=low+range; // high=#{適正上限bmi}
+    var center=(low+high)/2;//中央値
+    var lineh=center+range/4;//超適正上限
+    var linel=center-range/4;//超適正下限
+    var result=judge(bmi,low,high,center,linel,lineh);
+    var dif_order=return_dif(bmi,low,high,center,linel,lineh);
+    var food=food_judge(bmi,low,high,center,linel,lineh);
+    if(dif_order>0){
+    document.write("<h1>"+"あなたのBMI評価 : "+result+"→"+dif_order+"だけBMI体重を上げましょう!  "+food+"を食べましょう"+"</h1>");
+    }else {
+    document.write("<h1>"+"あなたのBMI評価 : "+result+"→"+dif_order+"だけBMI体重を上げましょう!  "+food+"を食べましょう"+"</h1>");
+    }
+  }else {
+    document.write("hogehoge");
+  }
+
+</script>
+</html>
