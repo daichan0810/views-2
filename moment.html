@@ -45,42 +45,120 @@ var output = moment().diff(moment([2014, 4, 1]), "days");
 console.log(output);  // => 176
 */
 //==============endDateから7日前(startDate)を計算=======
-var startDate="20150813"
-var m = moment(startDate, "YYYYMMDD"); // 第一引数：指定日時、第二引数：フォーマット
-var output = m.format('YYYY年MM月DD日');
+    /*
+    1 31
+    2 30
+    3 31
+    4 30
+    5 31
+    6 30
+    7 31
+    8 31
+    9 30
+    10 31
+    11 30
+    12 31
+    */
+var startDate="20160112"
+var m=moment(startDate, "YYYYMMDD");
+//var output=m.format('YYYY年MM月DD日');
 var year=m.year();
 var month=m.month()+1;
 var day=m.date()-7;
-var year2=String(year);
-var month2=String(month);
-var day2=String(day);
-
-if(month2.length==1){
-  var month3="0"+month2;
+document.write("a");
+if(day<1){//日付を-7した時に、繰り下がりが生じる場合
+        if(month==1||month==2||month==4||month==6||month==8||month==9||month==11){//前月が31日の時
+            document.write("b");
+            var day=31+day;
+            var month=month-1;
+            if(month==0){
+                document.write("c");
+                months=12;
+                var year=year-1;
+                var day_str=String(day);
+                var month_str=String(months);
+                var year_str=String(year);
+            
+                if(month_str.length==1){
+                    document.write("d");
+                    var month="0"+month_str;
+                }
+                if(day_str.length==1){
+                    document.write("e");
+                var day="0"+day_str;
+                }
+            }else{
+                document.write("f");
+                var day_str=String(day);
+                var month_str=String(month);
+                var year_str=String(year);
+        
+                if(month_str.length==1){
+                    document.write("g");
+                    var month="0"+month_str;
+                }
+                
+                if(day_str.length==1){
+                    document.write("h");
+                    var day="0"+day_str;
+                }
+            }
+        }
+    
+        if(month==3||month==5||month==7||month==10||month==12){//前月が30日以下の時2月は考慮してない
+            document.write("i");
+            var day=30+day;
+            var month=month-1;
+            var day_str=String(day);
+            var month_str=String(month);
+            var year_str=String(year);
+    
+            if(month_str.length==1){
+                document.write("j");
+                var month="0"+month_str;
+            }
+            if(day_str.length==1){
+                document.write("k");
+                var day="0"+day_str;
+            }
+        }
+}else{//日付を-7した時に、繰り下がりが生じない場合
+        document.write("l");
+        var year_str=String(year);
+        var month_str=String(month);
+        var day_str=String(day);
+        if(month_str.length==1){
+            document.write("m");
+            month_str="0"+month_str;
+        }
+        if(day_str.length==1){
+            document.write("n");
+            day_str="0"+day_str;
+        }
 }
-if(day2.length==1){
-  var day3="0"+day2;
-}
-var endDate=year2+month3+day3;
-//document.write(month3);
-document.write(endDate);
+    document.write("o");
+    var endDate=year_str+month_str+day_str;
+    document.write(endDate);
 
 //===============本日の日付===========================
-/*var m=moment();
+/*
+var m=moment();
 var year=m.year();
 var month=m.month()+1;
 var day=m.date();
 document.write("<h1>"+"本日は、"+year+"年"+month+"月"+day+"日"+"</h1>");*/
 
 //========最終月経日の入力から、本日は何週目の何日か計算==================
-/*var output=moment().diff(moment([2016, 4, 1]), "days");//最後の月経日
+/*
+var output=moment().diff(moment([2016, 4, 1]), "days");//最後の月経日
 var wee=output/7;
 var week=Math.round(wee);
 //document.write(week);
 var day=output%7;*/
 
 //========本日からから各year,month,dayを\抽出==========
-/*var dt = new Date();
+/*
+var dt = new Date();
 var year=dt.getFullYear();
 var month=dt.getMonth()+1;
 var date=dt.getDate();

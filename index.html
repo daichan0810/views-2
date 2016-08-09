@@ -24,6 +24,83 @@ var apiUrl = "https://gnvduf9ntg.execute-api.ap-northeast-1.amazonaws.com/intern
 $(function(){
   $('button#getData').click(function(){   //id,getdataのbuttonを押したら以下の処理を行う
     // 重複実行防止のためにボタンを押せなくする
+//==============endDateから7日前(startDate)を計算=======
+var startDate="20150401"
+var m = moment(startDate, "YYYYMMDD");
+//var output=m.format('YYYY年MM月DD日');
+var year=m.year();
+var month=m.month()+1;
+var day=m.date()-7;
+    /*
+    1 31
+    2 30
+    3 31
+    4 30
+    5 31
+    6 30
+    7 31
+    8 31
+    9 30
+    10 31
+    11 30
+    12 31
+    */
+if(day<1){//日付を-7した時に、繰り下がりが生じる場合
+        if(month==1||month==2||month==4||month==6||month==8||month==9||month==11){//前月が31日の時
+            var days1=31+day;
+            var months=month-1;
+            if(months==0){
+                months=12;
+                var years=year-1;
+                var days1_str=String(days1);
+                var months_str=String(months);
+                var years_str=String(years);
+            
+                if(months_str.length==1){
+                    var monthss="0"+months_str;
+                    var endDate=years_str+monthss+days1_str;
+                    document.write(endDate);
+                }
+            }
+            var days1_str=String(days1);
+            var months_str=String(months);
+            var years_str=String(year);
+            
+            if(months_str.length==1){
+                var monthss="0"+months_str;
+                var endDate=years_str+monthss+days1_str;
+                document.write(endDate);
+            }
+        }
+    
+        if(month==3||month==5||month==7||month==10||month==12){//前月が30日以下の時2月は考慮してない
+            var days2=30+day;
+            var months=month-1;
+            var days2_str=String(days2);
+            var months_str=String(months);
+            var years_str=String(year);
+    
+            if(months_str.length==1){
+                var monthss="0"+months_str;
+                var endDate=years_str+monthss+days2_str;
+                document.write(endDate);
+            }
+        }
+}else{//日付を-7した時に、繰り下がりが生じない場合
+        var year2=String(year);
+        var month2=String(month);
+        var day2=String(day);
+
+        if(month2.length==1){
+            var month3="0"+month2;
+        }
+        if(day2.length==1){
+            var day3="0"+day2;
+        }
+        var endDate=year2+month3+day3;
+        document.write(endDate);
+}
+//==============endDateから7日前(startDate)を計算=======
     if(isNotEmptyForGet()){
       var button = $(this);
       button.attr("disabled",true);
